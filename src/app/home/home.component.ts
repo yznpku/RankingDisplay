@@ -1,5 +1,6 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { FileWatcherService } from '../core/file-watcher.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,9 +9,10 @@ import { FileWatcherService } from '../core/file-watcher.service';
 })
 export class HomeComponent implements OnInit {
 
-  file: File | null
+  file: File | null;
 
-  constructor(private fileWatcherService: FileWatcherService) { }
+  constructor(private fileWatcherService: FileWatcherService,
+              private router: Router) { }
 
   ngOnInit() {
   }
@@ -19,6 +21,7 @@ export class HomeComponent implements OnInit {
     const e = event.srcElement as HTMLInputElement;
     if (e.files.length) {
       this.fileWatcherService.watchFile(e.files[0]);
+      this.router.navigate(['/', 'watch']);
     }
   }
 

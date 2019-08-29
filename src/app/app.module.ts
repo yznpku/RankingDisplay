@@ -18,6 +18,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HomeModule } from './home/home.module';
 
 import { AppComponent } from './app.component';
+import { FileListComponent } from './file-list/file-list.component';
+import { FileWatchComponent } from './file-watch/file-watch.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -25,7 +27,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, FileListComponent, FileWatchComponent],
   imports: [
     BrowserModule,
     FormsModule,
