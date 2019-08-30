@@ -3,6 +3,7 @@ import { FileWatcherService } from '../core/file-watcher.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Entry } from '../model/entry.model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-file-list',
@@ -15,6 +16,7 @@ export class FileListComponent implements OnInit, OnDestroy {
   
   modelHeader: String[] = [];
   modelEntries: Entry[] = [];
+  preparingList: String[] = [];
 
   constructor(private fileWatcherService: FileWatcherService) { }
 
@@ -30,8 +32,15 @@ export class FileListComponent implements OnInit, OnDestroy {
 
   onUpdated() {
     this.modelHeader = this.fileWatcherService.modelHeader;
-    this.modelEntries = this.fileWatcherService.modelEntries;
+    this.modelEntries = _.sortBy(this.fileWatcherService.modelEntries, entry => -entry.score);
+    this.preparingList = this.fileWatcherService.preparingList;
 
-    console.log(this.modelEntries);
+    for (let i = 0; i < this.modelEntries.length; i++) {
+      if (i > 0 && this.modelEntries[i].score == this.modelEntries[i - 1].score) {
+        this.modelEntries[i].rank = this.modelEntries[i - 1].rank;
+      } else {
+        this.modelEntries[i].rank = i + 1;
+      }
+    }
   }
 }

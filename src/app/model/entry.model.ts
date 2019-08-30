@@ -1,6 +1,6 @@
-export interface Entry {
-  rank: Number;
-  position: Number;
-  score: Number;
-  data: String[];
+export class Entry {
+  rank: number;
+  position: number;
+  score: number;
+  data: string[];
 }

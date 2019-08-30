@@ -10,6 +10,7 @@ export class FileWatcherService {
 
   modelHeader: String[] = [];
   modelEntries: Entry[] = [];
+  preparingList: String[] = [];
   modelUpdated = new EventEmitter<void>();
 
   private currentFile: File;
@@ -43,20 +44,41 @@ export class FileWatcherService {
 
   onDataReady() {
     const workbook = xlsx.read(this.fileReader.result, { type: 'buffer'});
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const range = xlsx.utils.decode_range(sheet['!ref']);
-    const columnCount = range.e.c;
-    const rowCount = range.e.r;
-    this.modelHeader = _.map(_.range(columnCount), c => sheet[xlsx.utils.encode_cell({ c, r: 0 })]['w']);
+    
+    this.loadSheet1(workbook.Sheets[workbook.SheetNames[0]]);
+    this.loadSheet2(workbook.Sheets[workbook.SheetNames[1]]);
 
-    this.modelEntries = _.map(_.range(rowCount - 1), r => {
-      const rank = r;
-      const data = _.map(_.range(columnCount), c => sheet[xlsx.utils.encode_cell({ c, r: r + 1 })]['w']);
-      const score = Number(sheet[xlsx.utils.encode_cell({ c: columnCount - 1, r: r + 1 })]['w']);
-      return { rank, data, score, position: rank };
+    this.modelUpdated.emit();
+  }
+
+  loadSheet1(sheet: xlsx.Sheet) {
+    const range = xlsx.utils.decode_range(sheet['!ref']);
+    const columnCount = range.e.c + 1;
+    const rowCount = range.e.r + 1;
+    this.modelHeader = _.map(_.range(columnCount), c => {
+      const cell = sheet[xlsx.utils.encode_cell({ c, r: 0 })];
+      return cell ? cell['w'] : '';
     });
 
-    console.log(sheet);
-    this.modelUpdated.emit();
+    console.log(range);
+    this.modelEntries = _.map(_.range(rowCount - 1), r => {
+      const rank = r;
+      const data = _.map(_.range(columnCount), c => {
+        const cell = sheet[xlsx.utils.encode_cell({ c, r: r + 1 })];
+        return cell ? cell['w'] : '';
+      });
+      const cell = sheet[xlsx.utils.encode_cell({ c: columnCount - 1, r: r + 1 })];
+      const score = cell ? Number(cell['w']) : 0;
+      return { rank, data, score, position: rank };
+    });
+  }
+
+  loadSheet2(sheet: xlsx.Sheet) {
+    const range = xlsx.utils.decode_range(sheet['!ref']);
+    const columnCount = range.e.c + 1;
+    const rowCount = range.e.r + 1;
+    this.preparingList = _.map(_.range(rowCount), r => {
+      return sheet[xlsx.utils.encode_cell({ c: 0, r })]['v'];
+    });
   }
 }

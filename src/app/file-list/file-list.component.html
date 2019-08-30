@@ -1,17 +1,21 @@
 <div fxFlex fxLayout="column">
-  <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+  <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+      <div class="preparing-list" fxFlex="0 0 auto" fxLayout="column">
+        <p>请以下学员做准备</p>
+        <p *ngFor="let x of preparingList">
+          {{ x }}
+        </p>
+      </div>
     <table>
       <tr>
         <th>排名</th>
         <th *ngFor="let header of modelHeader">{{ header }}</th>
       </tr>
-      <tr *ngFor="let entry of modelEntries">
+      <tr *ngFor="let entry of modelEntries"
+        [ngClass]="'rank' + entry.rank">
         <td>{{ entry.rank }}</td>
         <td *ngFor="let x of entry.data">{{ x }}</td>
       </tr>
     </table>
-  </div>
-  <div fxFlex="0 0 auto">
-    <button routerLink="/">Back</button>
   </div>
 </div>

@@ -7,3 +7,8 @@ html, body {
 }
 
 router-outlet + * { flex: 1 1 auto ; display: flex ; flex-direction: column ; }
+.btn {
+  background-color: #558B2F;
+  color: #EFEFEF;
+  padding: 10px 50px;
+}

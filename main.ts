@@ -1,8 +1,9 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, globalShortcut } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
-let win, serve;
+let win: BrowserWindow;
+let serve;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
 
@@ -20,7 +21,13 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
+    // fullscreen: true,
   });
+  win.setMenu(null);
+
+  const ret = globalShortcut.register('F11', () => {
+    win.setFullScreen(!win.isFullScreen());
+  })
 
   if (serve) {
     require('electron-reload')(__dirname, {
