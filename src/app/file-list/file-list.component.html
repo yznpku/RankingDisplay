@@ -1,12 +1,16 @@
 <div fxFlex fxLayout="column">
-
-  <ul fxFlex fxLayout="column" fxLayoutAlign="center center">
-    <li>1</li>
-    <li>2</li>
-    <li>3</li>
-    <li>4</li>
-    <li>5</li>
-  </ul>
+  <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <table>
+      <tr>
+        <th>排名</th>
+        <th *ngFor="let header of modelHeader">{{ header }}</th>
+      </tr>
+      <tr *ngFor="let entry of modelEntries">
+        <td>{{ entry.rank }}</td>
+        <td *ngFor="let x of entry.data">{{ x }}</td>
+      </tr>
+    </table>
+  </div>
   <div fxFlex="0 0 auto">
     <button routerLink="/">Back</button>
   </div>

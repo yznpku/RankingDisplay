@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Entry } from '../model/entry.model';
 import * as xlsx from 'xlsx';
 import * as _ from 'lodash';
@@ -8,8 +8,9 @@ import * as _ from 'lodash';
 })
 export class FileWatcherService {
 
-  modelHeader: String[];
-  modelEntries: Entry[];
+  modelHeader: String[] = [];
+  modelEntries: Entry[] = [];
+  modelUpdated = new EventEmitter<void>();
 
   private currentFile: File;
   private fileReader = new FileReader();
@@ -47,5 +48,15 @@ export class FileWatcherService {
     const columnCount = range.e.c;
     const rowCount = range.e.r;
     this.modelHeader = _.map(_.range(columnCount), c => sheet[xlsx.utils.encode_cell({ c, r: 0 })]['w']);
+
+    this.modelEntries = _.map(_.range(rowCount - 1), r => {
+      const rank = r;
+      const data = _.map(_.range(columnCount), c => sheet[xlsx.utils.encode_cell({ c, r: r + 1 })]['w']);
+      const score = Number(sheet[xlsx.utils.encode_cell({ c: columnCount - 1, r: r + 1 })]['w']);
+      return { rank, data, score, position: rank };
+    });
+
+    console.log(sheet);
+    this.modelUpdated.emit();
   }
 }

@@ -1,0 +1,13 @@
+table {
+    border-spacing: 0 5px;
+    tr:nth-child(1) {
+        background-color: blue;
+    }
+    tr {
+        background-color: #EFEFEF;
+        td, th {
+            padding: 10px 50px;
+            text-align: center;
+        }
+    }
+}
