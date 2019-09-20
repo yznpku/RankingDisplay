@@ -32,7 +32,8 @@ export class FileListComponent implements OnInit, OnDestroy {
 
   onUpdated() {
     this.modelHeader = this.fileWatcherService.modelHeader;
-    this.modelEntries = _.sortBy(this.fileWatcherService.modelEntries, entry => -entry.score);
+    this.modelEntries = _.sortBy(this.fileWatcherService.modelEntries, entry => -entry.score).slice(0, 10);
+  
     this.preparingList = this.fileWatcherService.preparingList;
 
     for (let i = 0; i < this.modelEntries.length; i++) {

@@ -1,12 +1,12 @@
 table {
-    border-spacing: 0 4px;
+    border-spacing: 0 8px;
     tr {
         background-color: #212121;
         color: #AAAAAA;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
         border-radius: 5px;
         td, th {
-            padding: 4px 50px;
+            padding: 8px 50px;
             text-align: center;
             font-size: xx-large;
         }
@@ -61,5 +61,5 @@ table {
     text-align: center;
     color: #EFEFEF;
     font-size: xx-large;
-    margin-right: 100px;
+    margin-right: 70px;
 }
